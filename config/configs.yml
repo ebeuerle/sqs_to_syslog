@@ -1,0 +1,6 @@
+redlock: 
+  aws_key:
+  aws_secret:
+  aws_region:
+  aws_sqs_queue:
+  syslog_host: 127.0.0.1  #default value
