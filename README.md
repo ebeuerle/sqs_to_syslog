@@ -4,7 +4,7 @@ Version: *1.0*
 Author: *Eddie Beuerlein*
 
 ### Summary
-This script will poll an AWS SQS queue for RedLock alerts and then format them and send them to a syslog listener (locally or remote). 
+This script will poll an AWS SQS queue for RedLock alerts and then format them and send them to a syslog listener (locally or remote). This can be used for QRadar as well by using the LEEF named script.
 
 ### Requirements and Dependencies
 
@@ -38,5 +38,9 @@ This script will poll an AWS SQS queue for RedLock alerts and then format them a
 
 ```
 python poll_n_write.py
+
+or
+
+python poll_n_write_leef.py (for QRadar)
 
 ```
