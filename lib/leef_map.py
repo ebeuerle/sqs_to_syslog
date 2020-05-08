@@ -4,7 +4,6 @@ import json
 import datetime
 
 class LEEFJson:
-
     def __init__(
          self,
          severity,
@@ -17,10 +16,7 @@ class LEEFJson:
          resourceRegion,
          policyDescription,
          policyRecommendation,
-
          resourceConfig,
-
-
          alertTs,
          callbackUrl,
          alertId,
@@ -28,10 +24,17 @@ class LEEFJson:
          resourceType,
          hasFinding,
          resourceRegionId,
-
          source,
          cloudType,
-         resourceCloudService
+         resourceCloudService,
+         anomaly,
+         alertRemediationCli,
+         complianceMetadata,
+         alertAttribution,
+         resource,
+         accountId,
+         policyId,
+         findingSummary
 
     ):
         self.severity = severity
@@ -44,23 +47,25 @@ class LEEFJson:
         self.resourceRegion = resourceRegion
         self.policyDescription = policyDescription
         self.policyRecommendation = policyRecommendation
-
         self.resourceConfig = resourceConfig
-
-
         self.alertTs = alertTs
         self.callbackUrl = callbackUrl
         self.alertId = alertId
         self.policyLabels = policyLabels
-
         self.resourceType = resourceType
-
         self.hasFinding = hasFinding
         self.resourceRegionId = resourceRegionId
-
         self.source = source
         self.cloudType = cloudType
         self.resourceCloudService = resourceCloudService
+        self.anomaly = anomaly
+        self.alertRemediationCli = alertRemediationCli
+        self.complianceMetadata = complianceMetadata
+        self.alertAttribution = alertAttribution
+        self.resource = resource
+        self.accountId = accountId
+        self.policyId = policyId
+        self.findingSummary = findingSummary
 
 
     def __str__(self):
@@ -99,44 +104,53 @@ class LEEFJson:
         l1.append("source=" + str(self.source))
         l1.append("cloudType=" + str(self.cloudType))
         l1.append("resourceCloudService=" + str(self.resourceCloudService))
+        l1.append("accountId=" + str(self.accountId))
+        l1.append("policyId=" + str(self.policyId))
 
         str1 =  ' '.join(l1)
 
         return str1.strip()
 
-
-def parseJson(jsonString):
-    obj = json.loads(jsonString,strict=False)
-
-
-
-    leefJsonObject =  LEEFJson(
-        str(obj["severity"]),
-        str(obj["resourceId"]),
-        str(obj["alertRuleName"]),
-        str(obj["policyName"]),
-        str(obj["accountName"]),
-        str(obj["resourceName"]),
-        str(obj["riskRating"]),
-        str(obj["resourceRegion"]),
-        str(obj["policyDescription"]),
-        str(obj["policyRecommendation"]),
-        obj["resourceConfig"],
-
-        int(obj["alertTs"]),
-        str(obj["callbackUrl"]),
-        str(obj["alertId"]),
-        obj["policyLabels"],
-        str(obj["resourceType"]),
+    @staticmethod
+    def parseJson(jsonString):
+        obj = json.loads(jsonString,strict=False)
 
 
-        str(obj["hasFinding"]),
-        str(obj["resourceRegionId"]),
 
-        str(obj["source"]),
-        str(obj["cloudType"]),
-        str(obj["resourceCloudService"])
+        leefJsonObject =  LEEFJson(
+            str(obj["severity"]),
+            str(obj["resourceId"]),
+            str(obj["alertRuleName"]),
+            str(obj["policyName"]),
+            str(obj["accountName"]),
+            str(obj["resourceName"]),
+            str(obj["riskRating"]),
+            str(obj["resourceRegion"]),
+            str(obj["policyDescription"]),
+            str(obj["policyRecommendation"]),
+            obj["resourceConfig"],
 
-    )
-    
-    return leefJsonObject
+            int(obj["alertTs"]),
+            str(obj["callbackUrl"]),
+            str(obj["alertId"]),
+            obj["policyLabels"],
+            str(obj["resourceType"]),
+
+
+            str(obj["hasFinding"]),
+            str(obj["resourceRegionId"]),
+
+            str(obj["source"]),
+            str(obj["cloudType"]),
+            str(obj["resourceCloudService"]),
+            obj["anomaly"],
+            obj["alertRemediationCli"],
+            obj["complianceMetadata"],
+            obj["alertAttribution"],
+            obj["resource"],
+            str(obj["accountId"]),
+            str(obj["policyId"]),
+            obj["findingSummary"]
+
+       )
+        return leefJsonObject

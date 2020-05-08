@@ -5,8 +5,6 @@ import yaml
 class ConfigHelper(object):
     def __init__(self):
         config = self.read_yml('configs')
-        self.rl_aws_key = config["redlock"]["aws_key"]
-        self.rl_aws_secret = config["redlock"]["aws_secret"]
         self.rl_aws_region = config["redlock"]["aws_region"]
         self.rl_aws_queue = config["redlock"]["aws_sqs_queue"]
         self.rl_syslog_host = config["redlock"]["syslog_host"]

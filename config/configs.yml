@@ -1,6 +1,4 @@
 redlock: 
-  aws_key:
-  aws_secret:
-  aws_region:
-  aws_sqs_queue:
-  syslog_host: 127.0.0.1  #default value
+  aws_region: #AWS region where queue lives 
+  aws_sqs_queue: #AWS sqs queue name
+  syslog_host:  #default value
