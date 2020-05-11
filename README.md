@@ -29,7 +29,16 @@ This script will poll an AWS SQS queue for RedLock alerts and then format them a
 ### Configuration
 
 1. Set environment variables for AWS Key/Secret per boto3 instructions
+```
+Boto3 will check these environment variables for credentials:
 
+AWS_ACCESS_KEY_ID
+The access key for your AWS account.
+AWS_SECRET_ACCESS_KEY
+The secret key for your AWS account.
+AWS_SESSION_TOKEN
+The session key for your AWS account. This is only needed when you are using temporary credentials. The AWS_SECURITY_TOKEN environment variable can also be used, but is only supported for backwards compatibility purposes. AWS_SESSION_TOKEN is supported by multiple AWS SDKs besides python.
+```
 2. Navigate to *sqs_to_syslog/config/configs.yml*
 
 3. Setup the sqs queue and aws region as well as syslog server(defaults to localhost) in the config/configs.yml
