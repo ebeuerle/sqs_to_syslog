@@ -28,11 +28,13 @@ This script will poll an AWS SQS queue for RedLock alerts and then format them a
 
 ### Configuration
 
-1. Navigate to *sqs_to_syslog/config/configs.yml*
+1. Set environment variables for AWS Key/Secret per boto3 instructions
 
-2. Fill out your AWS key, AWS secret, aws sqs queue and aws region as well as syslog server(defaults to localhost).
+2. Navigate to *sqs_to_syslog/config/configs.yml*
 
-3. Schedule to run the main script via cron or something similar: python poll_n_write.py
+3. Setup the sqs queue and aws region as well as syslog server(defaults to localhost) in the config/configs.yml
+
+4. Schedule to run the main script via cron or something similar: python poll_n_write.py
 
 ### Run
 
