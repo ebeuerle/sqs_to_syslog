@@ -14,12 +14,11 @@ import botocore
 from botocore.config import Config
 
 
-import lib,lib.config_helper
+import lib
+
 #Config setup for AWS and syslog
-config = lib.config_helper.ConfigHelper()
+config = lib.ConfigHelper()
 logging_server = config.rl_syslog_host
-ACCESS_KEY = config.rl_aws_key
-SECRET_KEY = config.rl_aws_secret
 REGION_NAME = config.rl_aws_region
 qname = config.rl_aws_queue
 poll_interval       = 5
@@ -29,28 +28,25 @@ VisibilityTimeout   = 3600
 
 
 syslog_logger     = logging.getLogger('SYSLOG')
-syslog_formatter  = logging.Formatter("%(asctime)s REDLOCK %(message)s", "%b %d %H:%M:%S")
-syslog_logger.setLevel(logging.DEBUG)
+syslog_formatter  = logging.Formatter("%(asctime)s PRISMA_CLOUD %(message)s\n", "%b %d %H:%M:%S")
+syslog_logger.setLevel(logging.INFO)
 
 syslog_handler = logging.handlers.SysLogHandler(address = (logging_server, 514),
-                                                facility = logging.handlers.SysLogHandler.LOG_LOCAL1)
+                                                facility = logging.handlers.SysLogHandler.LOG_LOCAL3)
 syslog_handler.setFormatter(syslog_formatter)
+syslog_handler.append_nul = False
 syslog_logger.addHandler(syslog_handler)
 
 
 #-------------------------------------------------------------------------------
 # Get the specified resource object
 def get_resource (service_name,
-                    ACCESS_KEY,
-                    SECRET_KEY,
                     REGION_NAME):
     # Build the Config dict
 #    config = Config(proxies=proxies_dict, connect_timeout=300) if proxies_dict else None
 
     # Construct the resource object
     sqs = boto3.resource(service_name,
-                         aws_access_key_id = ACCESS_KEY,
-                         aws_secret_access_key = SECRET_KEY,
                          region_name = REGION_NAME)
 
 
@@ -123,26 +119,23 @@ def _poll_n_write (q,
 
            try:
 
-#            syslog_str = "{event_attributes}".format(event_attributes=redlock_utils.parseJson(m.body))
+            syslog_str = "{event_attributes}".format(event_attributes=lib.LEEFJson.parseJson(m.body))
+            #print syslog_str
             syslog_str = m.body
-#            print "***SYSLOG STRING ***"
-#	    print syslog_str
 
             syslog_logger.info(syslog_str)
             time.sleep(5)
 
            except:
-            print ("Error in processing message:%s %(m.body).strip()")
+            print ("Error in processing message:%s"  % (m.body).strip())
 
 
                 # Delete the message that is written to logger
            try:
-               #qpylib.log('Delete SQS message', level='debug')
             m.delete()
            except:
-            print('Error in deleting message in SQS:%s' %(m.body).strip())
+            print ('Error in deleting message in SQS:%s' %(m.body).strip())
 
-        #qpylib.log('completed message processing. Now poll again', level='info')
 
 
 
@@ -184,9 +177,7 @@ def stopThread():
 # Get the queue
 # Start polling the queue
 # Write the received messages to Socket logger
-def poll_queue_n_write(ACCESS_KEY,
-                        SECRET_KEY,
-                        REGION_NAME,
+def poll_queue_n_write(REGION_NAME,
                         qname,
                         poll_interval,
                         poll_duration,
@@ -224,7 +215,7 @@ def poll_queue_n_write(ACCESS_KEY,
     #qpylib.log('Calling SQS to get data in poll_queue_n_write method', level='info')
     try:
 #        rsrc_sqs = get_resource('sqs', ACCESS_KEY, SECRET_KEY, REGION_NAME, proxies_dict)
-        rsrc_sqs = get_resource('sqs', ACCESS_KEY, SECRET_KEY, REGION_NAME)
+        rsrc_sqs = get_resource('sqs', REGION_NAME)
         q = get_queue(rsrc_sqs, qname)
 
     except botocore.exceptions.ClientError as e:
@@ -267,7 +258,7 @@ def poll_queue_n_write(ACCESS_KEY,
 
     stopThread()
 
-    print("Finished stopping thread")
+    print "Finished stopping thread"
 
     refreshTime=1
 
@@ -286,9 +277,7 @@ def poll_queue_n_write(ACCESS_KEY,
 
 #-------------------------------------------------------------------------------
 # Test the SQS connection
-def testSQSConnection(ACCESS_KEY,
-                        SECRET_KEY,
-                        REGION_NAME,
+def testSQSConnection(REGION_NAME,
                         qname,
                         poll_interval,
                         poll_duration,
@@ -300,7 +289,7 @@ def testSQSConnection(ACCESS_KEY,
 
     #qpylib.log('testSQSConnection method called', level='info')
     try:
-        rsrc_sqs = get_resource('sqs', ACCESS_KEY, SECRET_KEY, REGION_NAME, proxies_dict)
+        rsrc_sqs = get_resource('sqs', REGION_NAME, proxies_dict)
         q = get_queue(rsrc_sqs, qname)
 
     except botocore.exceptions.ClientError as e:
@@ -346,9 +335,7 @@ def testSQSConnection(ACCESS_KEY,
     return True
 
 if __name__ == "__main__":
-             res = poll_queue_n_write(ACCESS_KEY,
-                                      SECRET_KEY,
-                                     REGION_NAME,
+             res = poll_queue_n_write(REGION_NAME,
                                            qname,
                                    poll_interval,
                                    poll_duration,
@@ -356,7 +343,7 @@ if __name__ == "__main__":
                                VisibilityTimeout)
 
 if res == True:
-   print("Successfully connnected to SQS queue.") 
+   print "Successfully connnected to SQS queue." 
    while True:
     try:
         time.sleep(100)
@@ -364,7 +351,7 @@ if res == True:
         stopThread()
         break;
 else:
-   print("Error: %s" % res.error_msg)
+   print "Error: %s" % res.error_msg
 
     
 #    print res.error_msg

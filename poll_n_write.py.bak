@@ -14,9 +14,10 @@ import botocore
 from botocore.config import Config
 
 
-import lib,lib.config_helper
+import lib
+
 #Config setup for AWS and syslog
-config = lib.config_helper.ConfigHelper()
+config = lib.ConfigHelper()
 logging_server = config.rl_syslog_host
 ACCESS_KEY = config.rl_aws_key
 SECRET_KEY = config.rl_aws_secret
@@ -140,7 +141,7 @@ def _poll_n_write (q,
                #qpylib.log('Delete SQS message', level='debug')
             m.delete()
            except:
-            print('Error in deleting message in SQS:%s' %(m.body).strip())
+            print ('Error in deleting message in SQS:%s' %(m.body).strip())
 
         #qpylib.log('completed message processing. Now poll again', level='info')
 
@@ -267,7 +268,7 @@ def poll_queue_n_write(ACCESS_KEY,
 
     stopThread()
 
-    print("Finished stopping thread")
+    print "Finished stopping thread"
 
     refreshTime=1
 
@@ -356,7 +357,7 @@ if __name__ == "__main__":
                                VisibilityTimeout)
 
 if res == True:
-   print("Successfully connnected to SQS queue.") 
+   print "Successfully connnected to SQS queue." 
    while True:
     try:
         time.sleep(100)
@@ -364,7 +365,7 @@ if res == True:
         stopThread()
         break;
 else:
-   print("Error: %s" % res.error_msg)
+   print "Error: %s" % res.error_msg
 
     
 #    print res.error_msg

@@ -127,14 +127,14 @@ def _poll_n_write (q,
             time.sleep(5)
 
            except:
-            print ("Error in processing message:%s"  % (m.body).strip())
+            print("Error in processing message:%s"  % (m.body).strip())
 
 
                 # Delete the message that is written to logger
            try:
             m.delete()
            except:
-            print ('Error in deleting message in SQS:%s' %(m.body).strip())
+            print('Error in deleting message in SQS:%s' %(m.body).strip())
 
 
 
@@ -258,7 +258,7 @@ def poll_queue_n_write(REGION_NAME,
 
     stopThread()
 
-    print "Finished stopping thread"
+    print("Finished stopping thread")
 
     refreshTime=1
 
@@ -343,7 +343,7 @@ if __name__ == "__main__":
                                VisibilityTimeout)
 
 if res == True:
-   print "Successfully connnected to SQS queue." 
+   print("Successfully connnected to SQS queue.") 
    while True:
     try:
         time.sleep(100)
@@ -351,7 +351,7 @@ if res == True:
         stopThread()
         break;
 else:
-   print "Error: %s" % res.error_msg
+   print("Error: %s" % res.error_msg)
 
     
 #    print res.error_msg

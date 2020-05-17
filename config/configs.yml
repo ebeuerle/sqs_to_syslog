@@ -1,4 +1,0 @@
-redlock: 
-  aws_region: #AWS region where queue lives 
-  aws_sqs_queue: #AWS sqs queue name
-  syslog_host:  #default value
