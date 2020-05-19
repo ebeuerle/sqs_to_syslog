@@ -1,18 +1,10 @@
 import logging
-from logging import handlers
-import socket
-
-import time
-from threading import Thread
 import threading
-
 import time
-import json
+from logging import handlers
 
 import boto3
 import botocore
-from botocore.config import Config
-
 
 import lib
 
@@ -258,7 +250,7 @@ def poll_queue_n_write(REGION_NAME,
 
     stopThread()
 
-    print "Finished stopping thread"
+    print("Finished stopping thread")
 
     refreshTime=1
 
@@ -343,7 +335,7 @@ if __name__ == "__main__":
                                VisibilityTimeout)
 
 if res == True:
-   print "Successfully connnected to SQS queue." 
+   print("Successfully connnected to SQS queue.")
    while True:
     try:
         time.sleep(100)
@@ -351,7 +343,6 @@ if res == True:
         stopThread()
         break;
 else:
-   print "Error: %s" % res.error_msg
+    print("Error: %s" % res.error_msg)
 
-    
 #    print res.error_msg

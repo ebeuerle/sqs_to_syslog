@@ -1,26 +1,16 @@
 import logging
-from logging import handlers
-import socket
-
-import time
-from threading import Thread
 import threading
-
 import time
-import json
+from logging import handlers
 
 import boto3
 import botocore
-from botocore.config import Config
-
 
 import lib
 
 #Config setup for AWS and syslog
 config = lib.ConfigHelper()
 logging_server = config.rl_syslog_host
-ACCESS_KEY = config.rl_aws_key
-SECRET_KEY = config.rl_aws_secret
 REGION_NAME = config.rl_aws_region
 qname = config.rl_aws_queue
 poll_interval       = 5
@@ -30,7 +20,7 @@ VisibilityTimeout   = 3600
 
 
 syslog_logger     = logging.getLogger('SYSLOG')
-syslog_formatter  = logging.Formatter("%(asctime)s REDLOCK %(message)s", "%b %d %H:%M:%S")
+syslog_formatter  = logging.Formatter("%(asctime)s PRISMA_CLOUD %(message)s", "%b %d %H:%M:%S")
 syslog_logger.setLevel(logging.DEBUG)
 
 syslog_handler = logging.handlers.SysLogHandler(address = (logging_server, 514),
@@ -42,16 +32,12 @@ syslog_logger.addHandler(syslog_handler)
 #-------------------------------------------------------------------------------
 # Get the specified resource object
 def get_resource (service_name,
-                    ACCESS_KEY,
-                    SECRET_KEY,
                     REGION_NAME):
     # Build the Config dict
 #    config = Config(proxies=proxies_dict, connect_timeout=300) if proxies_dict else None
 
     # Construct the resource object
     sqs = boto3.resource(service_name,
-                         aws_access_key_id = ACCESS_KEY,
-                         aws_secret_access_key = SECRET_KEY,
                          region_name = REGION_NAME)
 
 
@@ -268,7 +254,7 @@ def poll_queue_n_write(ACCESS_KEY,
 
     stopThread()
 
-    print "Finished stopping thread"
+    print("Finished stopping thread")
 
     refreshTime=1
 
@@ -347,8 +333,7 @@ def testSQSConnection(ACCESS_KEY,
     return True
 
 if __name__ == "__main__":
-             res = poll_queue_n_write(ACCESS_KEY,
-                                      SECRET_KEY,
+             res = poll_queue_n_write(
                                      REGION_NAME,
                                            qname,
                                    poll_interval,
@@ -357,7 +342,7 @@ if __name__ == "__main__":
                                VisibilityTimeout)
 
 if res == True:
-   print "Successfully connnected to SQS queue." 
+   print("Successfully connnected to SQS queue.")
    while True:
     try:
         time.sleep(100)
@@ -365,7 +350,6 @@ if res == True:
         stopThread()
         break;
 else:
-   print "Error: %s" % res.error_msg
+    print("Error: %s" % res.error_msg)
 
-    
 #    print res.error_msg
