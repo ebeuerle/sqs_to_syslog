@@ -1,10 +1,10 @@
-# RedLock SQS poller to Syslog 
+# Prisma Cloud SQS poller to Syslog 
 
 Version: *1.1*
 Author: *Eddie Beuerlein*
 
 ### Summary
-This script will poll an AWS SQS queue for RedLock alerts and then format them and send them to a syslog listener (locally or remote). This can be used for QRadar as well by using the LEEF named script.
+This script will poll an AWS SQS queue for Prisma Cloud alerts and then format them and send them to a syslog listener (locally or remote). This can be used for QRadar as well by using the LEEF named script.
 
 ### Requirements and Dependencies
 
