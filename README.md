@@ -1,6 +1,6 @@
 # RedLock SQS poller to Syslog 
 
-Version: *1.0*
+Version: *1.1*
 Author: *Eddie Beuerlein*
 
 ### Summary
@@ -8,21 +8,13 @@ This script will poll an AWS SQS queue for RedLock alerts and then format them a
 
 ### Requirements and Dependencies
 
-1. Python 2.7.10 or newer
+1. Python 3.x or newer
 
-2. OpenSSL 1.0.2 or newer
-
-(if using on Mac OS, additional items may be nessessary.)
-
-3. Pip
-
-```sudo easy_install pip```
-
-4. Requests (Python library)
+2. Requests (Python library)
 
 ```sudo pip install requests```
 
-5. YAML (Python library)
+3. YAML (Python library)
 
 ```sudo pip install pyyaml```
 

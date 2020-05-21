@@ -120,8 +120,6 @@ def _poll_n_write (q,
            try:
 
             syslog_str = "{event_attributes}".format(event_attributes=lib.LEEFJson.parseJson(m.body))
-            #print syslog_str
-            syslog_str = m.body
 
             syslog_logger.info(syslog_str)
             time.sleep(5)
