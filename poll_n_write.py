@@ -171,9 +171,7 @@ def stopThread():
 # Get the queue
 # Start polling the queue
 # Write the received messages to Socket logger
-def poll_queue_n_write(ACCESS_KEY,
-                        SECRET_KEY,
-                        REGION_NAME,
+def poll_queue_n_write( REGION_NAME,
                         qname,
                         poll_interval,
                         poll_duration,
@@ -211,7 +209,7 @@ def poll_queue_n_write(ACCESS_KEY,
     #qpylib.log('Calling SQS to get data in poll_queue_n_write method', level='info')
     try:
 #        rsrc_sqs = get_resource('sqs', ACCESS_KEY, SECRET_KEY, REGION_NAME, proxies_dict)
-        rsrc_sqs = get_resource('sqs', ACCESS_KEY, SECRET_KEY, REGION_NAME)
+        rsrc_sqs = get_resource('sqs', REGION_NAME)
         q = get_queue(rsrc_sqs, qname)
 
     except botocore.exceptions.ClientError as e:
@@ -273,9 +271,7 @@ def poll_queue_n_write(ACCESS_KEY,
 
 #-------------------------------------------------------------------------------
 # Test the SQS connection
-def testSQSConnection(ACCESS_KEY,
-                        SECRET_KEY,
-                        REGION_NAME,
+def testSQSConnection(  REGION_NAME,
                         qname,
                         poll_interval,
                         poll_duration,
@@ -287,7 +283,7 @@ def testSQSConnection(ACCESS_KEY,
 
     #qpylib.log('testSQSConnection method called', level='info')
     try:
-        rsrc_sqs = get_resource('sqs', ACCESS_KEY, SECRET_KEY, REGION_NAME, proxies_dict)
+        rsrc_sqs = get_resource('sqs', REGION_NAME, proxies_dict)
         q = get_queue(rsrc_sqs, qname)
 
     except botocore.exceptions.ClientError as e:
