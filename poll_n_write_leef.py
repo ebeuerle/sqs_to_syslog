@@ -24,7 +24,8 @@ syslog_formatter  = logging.Formatter("%(asctime)s PRISMA_CLOUD %(message)s\n", 
 syslog_logger.setLevel(logging.INFO)
 
 syslog_handler = logging.handlers.SysLogHandler(address = (logging_server, 514),
-                                                facility = logging.handlers.SysLogHandler.LOG_LOCAL3)
+                                                facility = logging.handlers.SysLogHandler.LOG_LOCAL3,
+                                                socktype=socket.SOCK_STREAM)
 syslog_handler.setFormatter(syslog_formatter)
 syslog_handler.append_nul = False
 syslog_logger.addHandler(syslog_handler)
