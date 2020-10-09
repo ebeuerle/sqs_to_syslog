@@ -71,8 +71,8 @@ class LEEFJson:
     def __str__(self):
         l1 = []
 
-       # l1.append("cat=" + 'redlocklog')
-       # l1.append("eventID=" + 'redlock')
+        l1.append("cat=" + 'prismalog')
+        l1.append("eventID=" + 'PrismaCloud')
         l1.append("sev=" + str(self.severity))
         l1.append("resourceId=" + str(self.resourceId))
         l1.append("alertRuleName=" + str(self.alertRuleName))
