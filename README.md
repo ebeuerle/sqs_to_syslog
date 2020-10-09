@@ -1,10 +1,10 @@
 # Prisma Cloud SQS poller to Syslog 
 
-Version: *1.1*
+Version: *1.2*
 Author: *Eddie Beuerlein*
 
 ### Summary
-This script will poll an AWS SQS queue for Prisma Cloud alerts and then format them and send them to a syslog listener (locally or remote). This can be used for QRadar as well by using the LEEF named script.
+This script will poll an AWS SQS queue for Prisma Cloud alerts and then format them and send them to a syslog listener (locally or remote). This can be used for QRadar as well.
 
 ### Requirements and Dependencies
 
@@ -41,9 +41,5 @@ The session key for your AWS account. This is only needed when you are using tem
 
 ```
 python poll_n_write.py
-
-or
-
-python poll_n_write_leef.py (for QRadar)
 
 ```
