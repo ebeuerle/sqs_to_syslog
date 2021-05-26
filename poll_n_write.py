@@ -20,12 +20,13 @@ VisibilityTimeout   = 3600
 
 
 syslog_logger     = logging.getLogger('SYSLOG')
-syslog_formatter  = logging.Formatter("%(asctime)s PRISMA_CLOUD %(message)s", "%b %d %H:%M:%S")
+syslog_formatter  = logging.Formatter("%(asctime)s PRISMA_CLOUD %(message)s\n", "%b %d %H:%M:%S") #added \n
 syslog_logger.setLevel(logging.DEBUG)
 
 syslog_handler = logging.handlers.SysLogHandler(address = (logging_server, 514),
                                                 facility = logging.handlers.SysLogHandler.LOG_LOCAL3,
                                                 socktype=socket.SOCK_STREAM)
+syslog_handler.append_nul = False #added line
 syslog_handler.setFormatter(syslog_formatter)
 syslog_logger.addHandler(syslog_handler)
 
@@ -108,14 +109,14 @@ def _poll_n_write (q,
         # Delete the message from queue after writing it.
     if len(msgs):
        for m in msgs:
-
+           #remove compliance metadata to ensure alert payload is small enough for QRadar to consume (<32K)
+           mod_body = json.loads(m.body)
+           if 'complianceMetadata' in mod_body:
+               del mod_body['complianceMetadata']
+           m.body = json.dumps(mod_body)
            try:
 
-#            syslog_str = "{event_attributes}".format(event_attributes=redlock_utils.parseJson(m.body))
             syslog_str = m.body
-#            print "***SYSLOG STRING ***"
-#	    print syslog_str
-
             syslog_logger.info(syslog_str)
             time.sleep(5)
 
