@@ -111,13 +111,14 @@ def _poll_n_write (q,
     if len(msgs):
        for m in msgs:
            #remove compliance metadata to ensure alert payload is small enough for QRadar to consume (<32K)
-           mod_body = json.loads(m.body)
-           if 'complianceMetadata' in mod_body:
-               del mod_body['complianceMetadata']
-           m.body = json.dumps(mod_body)
+           temp = json.loads(m.body)
+           if 'complianceMetadata' in temp:
+              del temp['complianceMetadata']
+           mod_body = json.dumps(temp)
+
            try:
 
-            syslog_str = m.body
+            syslog_str = mod_body 
             syslog_logger.info(syslog_str)
             time.sleep(5)
 
